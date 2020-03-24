@@ -12,6 +12,7 @@ namespace WebApplication1.Controllers
     {
         public IActionResult Index()
         {
+            // Hello
             return View();
         }
 
