@@ -12,26 +12,39 @@ namespace WebApplication1.Controllers
     {
         public IActionResult Index()
         {
-            // Hello
+            ViewData["Message"] = "Главная страница";
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult Login()
         {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = "Страница входа";
 
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Register()
         {
+            ViewData["Message"] = "Страница регистрации";
+
+            return View();
+        }
+
+        public IActionResult AddHomework()
+        {
+            ViewData["Message"] = "Страница добавления дАмашки";
+            return View();
+        }
+
+        public IActionResult AddEvents()
+        {
+            ViewData["Message"] = "Страница добавления мероприятий";
+            return View();
+        }
+
+        public IActionResult TimeTable()
+        {
+            ViewData["Message"] = "Страница с расписанием";
             return View();
         }
 
