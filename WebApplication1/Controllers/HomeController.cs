@@ -41,6 +41,12 @@ namespace WebApplication1.Controllers
             ViewData["Message"] = "Страница добавления мероприятий";
             return View();
         }
+        public IActionResult TestMethod()
+        {
+            ViewData["Message"] = "Тестовое сообщение.";
+
+            return View();
+        }
 
         public IActionResult TimeTable()
         {
