@@ -51,7 +51,42 @@ namespace WebApplication1.Controllers
         public IActionResult TimeTable()
         {
             ViewData["Message"] = "Страница с расписанием";
-            return View();
+            var model = new TimeTableViewModel();
+            model.Days.Add(new Day()
+            {
+                Date = DateTime.Now
+            });
+            model.Days[0].HomeWorks.Add(new HomeWork()
+            {
+                ID = 1,
+                HomeworkName = "Выжить",
+                Discipline = "Математика",
+                Time = new TimeSpan(16, 0, 0)
+            });
+            model.Days[0].Events.Add(new Event()
+            {
+                ID = 1,
+                EventsName = "Введение в специальность (Мероприятие)",
+                Time = new TimeSpan(16, 30, 0)
+            });
+            model.Days.Add(new Day()
+            {
+                Date = DateTime.Now
+            });
+            model.Days[1].HomeWorks.Add(new HomeWork()
+            {
+                ID = 1,
+                HomeworkName = "Выжить",
+                Discipline = "Математика",
+                Time = new TimeSpan(16, 0, 0)
+            });
+            model.Days[1].Events.Add(new Event()
+            {
+                ID = 1,
+                EventsName = "Введение в специальность (Мероприятие)",
+                Time = new TimeSpan(16, 30, 0)
+            });
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

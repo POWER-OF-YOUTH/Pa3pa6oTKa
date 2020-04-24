@@ -26,3 +26,36 @@
         display: none;
     }
 }
+
+.content {
+    margin: 64px;
+}
+
+table {
+    width: 100%;
+    border: 1px solid #69c;
+}
+
+th {
+    font-weight: normal;
+    color: #039;
+    border-bottom: 2px solid #69c;
+    padding: 12px 17px;
+}
+
+.time-th {
+    width: 50px;
+}
+
+.event-color-tr {
+    background: #fceae0;
+}
+
+td {
+    color: #669;
+    padding: 7px 17px;
+}
+
+tr:hover td {
+    background: #ccddff;
+}

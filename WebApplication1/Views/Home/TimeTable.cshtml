@@ -1,8 +1,38 @@
-﻿
+﻿@model TimeTableViewModel
 @{
     ViewData["Title"] = "TimeTable";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@ViewData["message"] Тут вы можете увидеть своё расписание ( в разработке)</h2>
+@foreach (var day in Model.Days)
+{
+<div class="table-container">
+    <h5>@day.Date.ToString()</h5>
+    <div>
+        <table>
+            <tr>
+                <th class="time-th">Время</th>
+                <th>Предмет</th>
+                <th>Домашнее</th>
+            </tr>
+            @foreach (var homework in day.HomeWorks)
+            {
+                <tr>
+                    <td>@homework.Time.ToString()</td>
+                    <td>@homework.Discipline</td>
+                    <td>@homework.HomeworkName</td>
+                </tr>
+            }
+            @foreach (var e in day.Events)
+            {
+                <tr class="event-color-tr">
+                    <td>@e.Time.ToString()</td>
+                    <td colspan="2">@e.EventsName</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+}
 
