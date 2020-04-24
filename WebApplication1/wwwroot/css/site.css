@@ -34,10 +34,14 @@
 table {
     width: 100%;
     border: 1px solid #69c;
+    font-size: 26px;
+    
 }
 
 th {
+    
     font-weight: normal;
+    height : 10px;
     color: #039;
     border-bottom: 2px solid #69c;
     padding: 12px 17px;
@@ -54,8 +58,15 @@ th {
 td {
     color: #669;
     padding: 7px 17px;
+    height : 80px;
+    
+   
 }
 
 tr:hover td {
     background: #ccddff;
+   
+}
+h5 {
+    font-size: 24px;
 }
