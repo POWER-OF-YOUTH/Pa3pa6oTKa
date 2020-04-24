@@ -7,32 +7,52 @@
 <h2>@ViewData["message"] Тут вы можете увидеть своё расписание ( в разработке)</h2>
 @foreach (var day in Model.Days)
 {
-<div class="table-container">
-    <h5>@day.Date.ToString()</h5>
-    <div>
-        <table>
-            <tr>
-                <th class="time-th">Время</th>
-                <th>Предмет</th>
-                <th>Домашнее</th>
-            </tr>
-            @foreach (var homework in day.HomeWorks)
-            {
+    <div class="table-container">
+        <h5>@day.Date.ToString()</h5>
+        <div>
+            <table>
                 <tr>
-                    <td>@homework.Time.ToString()</td>
-                    <td>@homework.Discipline</td>
-                    <td>@homework.HomeworkName</td>
+                    <th class="time-th">Время</th>
+                    <th>Предмет</th>
+                    <th>Домашнее</th>
                 </tr>
-            }
-            @foreach (var e in day.Events)
-            {
-                <tr class="event-color-tr">
-                    <td>@e.Time.ToString()</td>
-                    <td colspan="2">@e.EventsName</td>
-                </tr>
-            }
-        </table>
+                @foreach (var homework in day.HomeWorks)
+                {
+                    <tr>
+                        <td>@homework.Time.ToString()</td>
+                        <td>@homework.Discipline</td>
+                        <td>@homework.HomeworkName</td>
+                    </tr>
+                }
+                @foreach (var e in day.Events)
+                {
+                    <tr class="event-color-tr">
+                        <td>@e.Time.ToString()</td>
+                        <td colspan="2">@e.EventsName</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+}
+
+<div class="modal fade" id="addHomework" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Добавление домашней РАБоты</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
     </div>
 </div>
-}
 
