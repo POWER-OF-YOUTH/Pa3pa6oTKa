@@ -39,7 +39,7 @@
                         <td>@e.Time.ToString()</td>
                         <td colspan="2">@e.EventsName</td>
                         <td>
-                            <a asp-area="" asp-controller="Home" asp-action="Index">
+                            <a data-toggle="modal" data-target="#addEvent">
                                 <svg style="width:50px;height:50px" viewBox="0 0 24 24">
                                     <path fill="currentColor" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
                                 </svg>
@@ -52,8 +52,8 @@
     </div>
 }
 
-<div class="modal fade" id="addHomework" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="addHomework" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  >
+    <div class="modal-dialog" role="document" style="width :35%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Добавление домашней РАБоты</h5>
@@ -61,12 +61,48 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                ...
+            <div class="modal-body" style=" height: 500px;">
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Название</label>
+                        <input  class="form-control" aria-describedby="emailHelp" placeholder="Введите название" >            
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Описание</label>
+                        <textarea  class="form-control" id="exampleInputPassword1" placeholder="Описание" style="height:150px"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addEvent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Добавление мероприятий</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style=" height: 500px;">
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Название</label>
+                        <input class="form-control" aria-describedby="emailHelp" placeholder="Введите название">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Описание</label>
+                        <textarea class="form-control" id="exampleInputPassword1" placeholder="Описание" style="height:150px"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </form>
+            </div>
+            <div class="modal-footer">
             </div>
         </div>
     </div>
