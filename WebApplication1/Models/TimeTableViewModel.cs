@@ -12,6 +12,7 @@ namespace WebApplication1.Models
 
     public class Day
     {
+        public string Name;
         public DateTime Date;
         public List<HomeWork> HomeWorks = new List<HomeWork>();
         public List<Event> Events = new List<Event>();

@@ -54,7 +54,8 @@ namespace WebApplication1.Controllers
             var model = new TimeTableViewModel();
             model.Days.Add(new Day()
             {
-                Date = DateTime.Now
+                Name = "Понедельник",
+                Date = DateTime.Now.Date
             });
             model.Days[0].HomeWorks.Add(new HomeWork()
             {
@@ -71,6 +72,7 @@ namespace WebApplication1.Controllers
             });
             model.Days.Add(new Day()
             {
+                Name = "Вторник",
                 Date = DateTime.Now
             });
             model.Days[1].HomeWorks.Add(new HomeWork()
@@ -86,7 +88,91 @@ namespace WebApplication1.Controllers
                 EventsName = "Введение в специальность (Мероприятие)",
                 Time = new TimeSpan(16, 30, 0)
             });
+            model.Days.Add(new Day()
+            {
+                Name = "Среда",
+                Date = DateTime.Now
+            });
+            model.Days[2].HomeWorks.Add(new HomeWork()
+            {
+                ID = 1,
+                HomeworkName = "Выжить",
+                Discipline = "Математика",
+                Time = new TimeSpan(16, 0, 0)
+            });
+            model.Days[2].Events.Add(new Event()
+            {
+                ID = 1,
+                EventsName = "Введение в специальность (Мероприятие)",
+                Time = new TimeSpan(16, 30, 0)
+            });
+            model.Days.Add(new Day()
+            {
+                Name = "Четверг",
+                Date = DateTime.Now
+            });
+            model.Days[3].HomeWorks.Add(new HomeWork()
+            {
+                ID = 1,
+                HomeworkName = "Выжить",
+                Discipline = "Математика",
+                Time = new TimeSpan(16, 0, 0)
+            });
+            model.Days[3].Events.Add(new Event()
+            {
+                ID = 1,
+                EventsName = "Введение в специальность (Мероприятие)",
+                Time = new TimeSpan(16, 30, 0)
+            });
+            model.Days.Add(new Day()
+            {
+                Name = "Пятница",
+                Date = DateTime.Now
+            });
+            model.Days[4].HomeWorks.Add(new HomeWork()
+            {
+                ID = 1,
+                HomeworkName = "Выжить",
+                Discipline = "Математика",
+                Time = new TimeSpan(16, 0, 0)
+            });
+            model.Days[4].Events.Add(new Event()
+            {
+                ID = 1,
+                EventsName = "Введение в специальность (Мероприятие)",
+                Time = new TimeSpan(16, 30, 0)
+            });
+            model.Days.Add(new Day()
+            {
+                Name = "Суббота",
+                Date = DateTime.Now
+            });
+            model.Days[5].HomeWorks.Add(new HomeWork()
+            {
+                ID = 1,
+                HomeworkName = "Выжить",
+                Discipline = "Математика",
+                Time = new TimeSpan(16, 0, 0)
+            });
+            model.Days[5].Events.Add(new Event()
+            {
+                ID = 1,
+                EventsName = "Введение в специальность (Мероприятие)",
+                Time = new TimeSpan(16, 30, 0)
+            });
+            model.Days.Add(new Day()
+            {
+                Name = "Воскресенье",
+                Date = DateTime.Now
+            });
+            model.Days[6].Events.Add(new Event()
+            {
+                ID = 1,
+                EventsName = "Введение в специальность (Мероприятие)",
+                Time = new TimeSpan(16, 30, 0)
+            });
             return View(model);
+
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
