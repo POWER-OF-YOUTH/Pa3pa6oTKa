@@ -28,8 +28,9 @@ namespace WebApplication1.Models
 
     public class Event
     {
-        public TimeSpan Time;
-        public string EventsName;
         public int ID;
+        public DateTime StartTime;
+        public string Name;
+        public string Description;
     }
 }

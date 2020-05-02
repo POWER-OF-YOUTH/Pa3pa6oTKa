@@ -53,127 +53,15 @@ namespace WebApplication1.Controllers
         {
             ViewData["Message"] = "Страница с расписанием";
             var model = new TimeTableViewModel();
+            var x = DatabaseManager.GetMain().GetEventByTime(DateTime.Now, DateTime.Now + new TimeSpan(7, 0, 0, 0));
+            //TODO: Поработать над сортировкой данных
             model.Days.Add(new Day()
             {
-                Name = "Понедельник",
-                Date = DateTime.Now.Date
-            });
-            model.Days[0].HomeWorks.Add(new HomeWork()
-            {
-                ID = 1,
-                HomeworkName = "Выжить",
-                Discipline = "Математика",
-                Time = new TimeSpan(16, 0, 0)
-            });
-            model.Days[0].Events.Add(new Event()
-            {
-                ID = 1,
-                EventsName = "Введение в специальность (Мероприятие)",
-                Time = new TimeSpan(16, 30, 0)
-            });
-            model.Days.Add(new Day()
-            {
-                Name = "Вторник",
-                Date = DateTime.Now
-            });
-            model.Days[1].HomeWorks.Add(new HomeWork()
-            {
-                ID = 1,
-                HomeworkName = "Выжить",
-                Discipline = "Математика",
-                Time = new TimeSpan(16, 0, 0)
-            });
-            model.Days[1].Events.Add(new Event()
-            {
-                ID = 1,
-                EventsName = "Введение в специальность (Мероприятие)",
-                Time = new TimeSpan(16, 30, 0)
-            });
-            model.Days.Add(new Day()
-            {
-                Name = "Среда",
-                Date = DateTime.Now
-            });
-            model.Days[2].HomeWorks.Add(new HomeWork()
-            {
-                ID = 1,
-                HomeworkName = "Выжить",
-                Discipline = "Математика",
-                Time = new TimeSpan(16, 0, 0)
-            });
-            model.Days[2].Events.Add(new Event()
-            {
-                ID = 1,
-                EventsName = "Введение в специальность (Мероприятие)",
-                Time = new TimeSpan(16, 30, 0)
-            });
-            model.Days.Add(new Day()
-            {
-                Name = "Четверг",
-                Date = DateTime.Now
-            });
-            model.Days[3].HomeWorks.Add(new HomeWork()
-            {
-                ID = 1,
-                HomeworkName = "Выжить",
-                Discipline = "Математика",
-                Time = new TimeSpan(16, 0, 0)
-            });
-            model.Days[3].Events.Add(new Event()
-            {
-                ID = 1,
-                EventsName = "Введение в специальность (Мероприятие)",
-                Time = new TimeSpan(16, 30, 0)
-            });
-            model.Days.Add(new Day()
-            {
-                Name = "Пятница",
-                Date = DateTime.Now
-            });
-            model.Days[4].HomeWorks.Add(new HomeWork()
-            {
-                ID = 1,
-                HomeworkName = "Выжить",
-                Discipline = "Математика",
-                Time = new TimeSpan(16, 0, 0)
-            });
-            model.Days[4].Events.Add(new Event()
-            {
-                ID = 1,
-                EventsName = "Введение в специальность (Мероприятие)",
-                Time = new TimeSpan(16, 30, 0)
-            });
-            model.Days.Add(new Day()
-            {
-                Name = "Суббота",
-                Date = DateTime.Now
-            });
-            model.Days[5].HomeWorks.Add(new HomeWork()
-            {
-                ID = 1,
-                HomeworkName = "Выжить",
-                Discipline = "Математика",
-                Time = new TimeSpan(16, 0, 0)
-            });
-            model.Days[5].Events.Add(new Event()
-            {
-                ID = 1,
-                EventsName = "Введение в специальность (Мероприятие)",
-                Time = new TimeSpan(16, 30, 0)
-            });
-            model.Days.Add(new Day()
-            {
-                Name = "Воскресенье",
-                Date = DateTime.Now
-            });
-            model.Days[6].Events.Add(new Event()
-            {
-                ID = 1,
-                EventsName = "Введение в специальность (Мероприятие)",
-                Time = new TimeSpan(16, 30, 0)
+                Name = "Что?",
+                Date = DateTime.Now,
+                Events = x
             });
             return View(model);
-
         }
 
 #region Data
