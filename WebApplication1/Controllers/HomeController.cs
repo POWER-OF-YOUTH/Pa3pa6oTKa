@@ -54,13 +54,14 @@ namespace WebApplication1.Controllers
             ViewData["Message"] = "Страница с расписанием";
             var model = new TimeTableViewModel();
             var events = DatabaseManager.GetMain().GetEventsByTime(DateTime.Now, DateTime.Now + new TimeSpan(7, 0, 0, 0));
-            var homeworks = DatabaseManager.GetMain().GetHomeworkByTime(DateTime.Now+ new TimeSpan(7, 0, 0, 0));
+            var homeworks = DatabaseManager.GetMain().GetHomeworksByTime(DateTime.Now, DateTime.Now + new TimeSpan(7, 0, 0, 0));
             //TODO: Поработать над сортировкой данных
             model.Days.Add(new Day()
             {
                 Name = "Понедельник",
                 Date = DateTime.Now,
-                Events = events
+                Events = events,
+                HomeWorks = homeworks
             });
             return View(model);
         }

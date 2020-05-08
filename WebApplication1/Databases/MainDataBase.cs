@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using WebApplication1.DatabaseModels;
 using WebApplication1.Models;
 
 namespace WebApplication1.Databases
@@ -13,7 +14,8 @@ namespace WebApplication1.Databases
     {
         #region TableNames
         private static readonly string Table_Events = "events";
-            private static readonly string Table_Homeworks = "homeworks";
+        private static readonly string Table_Homeworks = "homeworks";
+        private static readonly string Table_Courses = "courses";
         #endregion
 
         #region SQLQueries
@@ -26,7 +28,7 @@ namespace WebApplication1.Databases
         static MainDataBase()
         {
             SQL_CreateHomework = $"INSERT INTO {Table_Homeworks} (title,description,attachment,deadline) VALUES (@title, @description,@attachment,@deadline)";
-            SQL_GetHomeworkByTime = $"SELECT * FROM {Table_Homeworks} WHERE deadline > @sdeadline AND deadline < @edeadline";
+            SQL_GetHomeworkByTime = $"SELECT h.id, h.groupid, h.title, h.description, h.attachment, h.deadline, h.courseid, c.courseName FROM {Table_Homeworks} as h, {Table_Courses} as c WHERE h.courseid = c.id AND deadline > @sdeadline AND deadline < @edeadline ORDER BY h.deadline";
             SQL_CreateEvent = $"INSERT INTO {Table_Events} (name, description, startTime) VALUES (@name, @desc, @sTime)";
             SQL_GetEventByTime = $"SELECT * FROM {Table_Events} WHERE startTime > @sTime AND startTime < @eTime";
         }
@@ -76,13 +78,35 @@ namespace WebApplication1.Databases
             ExecuteNonQuery(command);
             Release();
         }
-        public List<Event> GetHomeworksByTime(DateTime startTime, DateTime endTime)
+
+        public List<Homework> GetHomeworksByTime(DateTime startTime, DateTime endTime)
         {
-            throw new NotImplementedException();
-            //Release();
-            //return events;
+            var command = new MySqlCommand(SQL_GetHomeworkByTime);
+            command.Parameters.Add(new MySqlParameter("@sdeadline", startTime));
+            command.Parameters.Add(new MySqlParameter("@edeadline", endTime));
+            var homeworks = new List<Homework>();
+            ExecuteReaderAsync(command, x =>
+            {
+                while (x.Read())
+                {
+                    var homework = new Homework();
+                    homework.ID = x.GetInt32(0);
+                    homework.GroupID = x.GetInt32(1);
+                    homework.Title = x.GetString(2);
+                    homework.Description = x.GetString(3);
+                    if (!x.IsDBNull(4))
+                        homework.Attachment = x.GetString(4);
+                    homework.Deadline = x.GetDateTime(5);
+                    homework.Course = new Course()
+                    {
+                        ID = x.GetInt32(6),
+                        CourseName = x.GetString(7)
+                    };
+                    homeworks.Add(homework);
+                }
+            });
+            Release();
+            return homeworks;
         }
-
-
     }
 }

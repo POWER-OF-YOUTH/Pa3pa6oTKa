@@ -23,9 +23,9 @@
             @foreach (var homework in day.HomeWorks)
             {
                 <tr>
-                    <td>@homework.Time.ToString()</td>
-                    <td>@homework.Discipline</td>
-                    <td>@homework.HomeworkName</td>
+                    <td>@homework.Deadline.ToString()</td>
+                    <td>@homework.Course.CourseName</td>
+                    <td>@homework.Title</td>
                     <td>
                         <a data-toggle="modal" data-target="#addHomework">
                             <svg style="width:50px;height:50px" viewBox="0 0 24 24">

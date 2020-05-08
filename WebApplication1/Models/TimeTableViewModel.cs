@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApplication1.DatabaseModels;
 
 namespace WebApplication1.Models
 {
@@ -14,16 +15,8 @@ namespace WebApplication1.Models
     {
         public string Name;
         public DateTime Date;
-        public List<HomeWork> HomeWorks = new List<HomeWork>();
+        public List<Homework> HomeWorks = new List<Homework>();
         public List<Event> Events = new List<Event>();
-    }
-
-    public class HomeWork
-    {
-        public TimeSpan Time;
-        public string Discipline;
-        public string HomeworkName;
-        public int ID;
     }
 
     public class Event
