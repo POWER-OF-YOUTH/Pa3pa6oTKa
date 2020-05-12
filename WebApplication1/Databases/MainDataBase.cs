@@ -28,9 +28,9 @@ namespace WebApplication1.Databases
         static MainDataBase()
         {
             SQL_CreateHomework = $"INSERT INTO {Table_Homeworks} (title,description,attachment,deadline) VALUES (@title, @description,@attachment,@deadline)";
-            SQL_GetHomeworkByTime = $"SELECT h.id, h.groupid, h.title, h.description, h.attachment, h.deadline, h.courseid, c.courseName FROM {Table_Homeworks} as h, {Table_Courses} as c WHERE h.courseid = c.id AND deadline > @sdeadline AND deadline < @edeadline ORDER BY h.deadline";
+            SQL_GetHomeworkByTime = $"SELECT h.id, h.groupid, h.title, h.description, h.attachment, h.deadline, h.courseid, c.courseName FROM {Table_Homeworks} as h, {Table_Courses} as c WHERE h.courseid = c.id AND deadline >= @sdeadline AND deadline <= @edeadline ORDER BY h.deadline";
             SQL_CreateEvent = $"INSERT INTO {Table_Events} (name, description, startTime) VALUES (@name, @desc, @sTime)";
-            SQL_GetEventByTime = $"SELECT * FROM {Table_Events} WHERE startTime > @sTime AND startTime < @eTime";
+            SQL_GetEventByTime = $"SELECT * FROM {Table_Events} WHERE startTime >= @sTime AND startTime <= @eTime";
         }
 
         public MainDataBase() : base(File.ReadLines(@"secretdatabaseinformation.txt").First())

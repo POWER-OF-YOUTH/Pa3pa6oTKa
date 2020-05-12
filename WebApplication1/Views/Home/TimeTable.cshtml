@@ -11,7 +11,7 @@
 <div class="table-container">
     <br /> 
     <br />
-    <h5> @day.Name.ToString(): @day.Date.ToString("dd MMMM yyyy") </h5>
+    <h5> @day.Value.Name: @day.Value.Date.ToString("dd MMMM yyyy")</h5>
     <div>
         <table>
             <tr>
@@ -20,10 +20,10 @@
                 <th>Что нужно знать</th>
                 <th></th>
             </tr>
-            @foreach (var homework in day.HomeWorks)
+            @foreach (var homework in day.Value.HomeWorks)
             {
                 <tr>
-                    <td>@homework.Deadline.ToString()</td>
+                    <td>@homework.Deadline.TimeOfDay.ToString("hh\\:mm")</td>
                     <td>@homework.Course.CourseName</td>
                     <td>@homework.Title</td>
                     <td>
@@ -35,10 +35,10 @@
                     </td>
                 </tr>
             }
-            @foreach (var e in day.Events)
+            @foreach (var e in day.Value.Events)
             {
                 <tr class="event-color-tr">
-                    <td>@e.StartTime.ToString()</td>
+                    <td>@e.StartTime.TimeOfDay.ToString("hh\\:mm")</td>
                     <td colspan="2">@e.Name</td>
                     <td>
                         <a data-toggle="modal" data-target="#addEvent">

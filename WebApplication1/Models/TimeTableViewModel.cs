@@ -8,7 +8,7 @@ namespace WebApplication1.Models
 {
     public class TimeTableViewModel
     {
-        public List<Day> Days = new List<Day>();
+        public Dictionary<DateTime, Day> Days = new Dictionary<DateTime, Day>();
     }
 
     public class Day
@@ -17,6 +17,23 @@ namespace WebApplication1.Models
         public DateTime Date;
         public List<Homework> HomeWorks = new List<Homework>();
         public List<Event> Events = new List<Event>();
+
+        public Day(DateTime date)
+        {
+            Date = date;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Day)
+                return Equals(obj as Day);
+            return ReferenceEquals(obj, this);
+        }
+
+        public bool Equals(DateTime date)
+        {
+            return Date == date;
+        }
     }
 
     public class Event

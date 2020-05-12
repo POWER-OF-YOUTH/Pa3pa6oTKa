@@ -53,17 +53,32 @@ namespace WebApplication1.Controllers
         {
             ViewData["Message"] = "Страница с расписанием";
             var model = new TimeTableViewModel();
-            var events = DatabaseManager.GetMain().GetEventsByTime(DateTime.Now, DateTime.Now + new TimeSpan(7, 0, 0, 0));
-            var homeworks = DatabaseManager.GetMain().GetHomeworksByTime(DateTime.Now, DateTime.Now + new TimeSpan(7, 0, 0, 0));
-            //TODO: Поработать над сортировкой данных
-            model.Days.Add(new Day()
+            var date = DateTime.Now.Date;
+            while (date.DayOfWeek != DayOfWeek.Monday)
+                date -= new TimeSpan(1, 0, 0, 0);
+            var events = DatabaseManager.GetMain().GetEventsByTime(date, DateTime.Now + new TimeSpan(14, 0, 0, 0));
+            var homeworkList = DatabaseManager.GetMain().GetHomeworksByTime(date, DateTime.Now + new TimeSpan(14, 0, 0, 0));
+            foreach (var item in events)
             {
-                Name = "Понедельник",
-                Date = DateTime.Now,
-                Events = events,
-                HomeWorks = homeworks
-            });
+                CreateDayIfNotExists(model.Days, item.StartTime.Date);
+                model.Days[item.StartTime.Date].Events.Add(item);
+            }
+            foreach (var item in homeworkList)
+            {
+                CreateDayIfNotExists(model.Days, item.Deadline.Date);
+                model.Days[item.Deadline.Date].HomeWorks.Add(item);
+            }
+            model.Days.OrderBy(x => x.Key);
             return View(model);
+        }
+
+        private void CreateDayIfNotExists(Dictionary<DateTime, Day> days, DateTime date)
+        {
+            if (!days.ContainsKey(date))
+                days.Add(date, new Day(date)
+                {
+                    Name = date.DayOfWeek.ToString()
+                });
         }
 
 #region Data
