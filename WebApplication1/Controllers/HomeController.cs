@@ -56,8 +56,8 @@ namespace WebApplication1.Controllers
             var date = DateTime.Now.Date;
             while (date.DayOfWeek != DayOfWeek.Monday)
                 date -= new TimeSpan(1, 0, 0, 0);
-            var events = DatabaseManager.GetMain().GetEventsByTime(date, DateTime.Now + new TimeSpan(14, 0, 0, 0));
-            var homeworkList = DatabaseManager.GetMain().GetHomeworksByTime(date, DateTime.Now + new TimeSpan(14, 0, 0, 0));
+            var events = DatabaseManager.GetMain().GetEventsByTime(date, date + new TimeSpan(14, 0, 0, 0));
+            var homeworkList = DatabaseManager.GetMain().GetHomeworksByTime(date, date + new TimeSpan(14, 0, 0, 0));
             foreach (var item in events)
             {
                 CreateDayIfNotExists(model.Days, item.StartTime.Date);
@@ -68,7 +68,7 @@ namespace WebApplication1.Controllers
                 CreateDayIfNotExists(model.Days, item.Deadline.Date);
                 model.Days[item.Deadline.Date].HomeWorks.Add(item);
             }
-            model.Days.OrderBy(x => x.Key);
+            model.Days = model.Days.OrderBy(x => x.Key).ToDictionary(x => x.Key, y => y.Value);
             return View(model);
         }
 
