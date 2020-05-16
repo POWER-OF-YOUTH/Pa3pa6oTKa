@@ -9,6 +9,8 @@ namespace WebApplication1.Models
     public class TimeTableViewModel
     {
         public Dictionary<DateTime, Day> Days = new Dictionary<DateTime, Day>();
+        public bool EventChecked { get; set; }
+        public bool HomeworkChecked { get; set; }
     }
 
     public class Day

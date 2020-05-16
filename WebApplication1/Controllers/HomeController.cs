@@ -57,6 +57,8 @@ namespace WebApplication1.Controllers
             var date = DateTime.Now.Date;
             while (date.DayOfWeek != DayOfWeek.Monday)
                 date -= new TimeSpan(1, 0, 0, 0);
+            if (!eventCheckbox && !homeworkCheckbox)
+                eventCheckbox = homeworkCheckbox = true;
             if(eventCheckbox )
             {
                 var events = DatabaseManager.GetMain().GetEventsByTime(date, date + new TimeSpan(14, 0, 0, 0));
@@ -74,8 +76,9 @@ namespace WebApplication1.Controllers
                     CreateDayIfNotExists(model.Days, item.Deadline.Date);
                     model.Days[item.Deadline.Date].HomeWorks.Add(item);
                 }
-            }      
-           
+            }
+            model.EventChecked = eventCheckbox;
+            model.HomeworkChecked = homeworkCheckbox;
             
             model.Days = model.Days.OrderBy(x => x.Key).ToDictionary(x => x.Key, y => y.Value);
             return View(model);
