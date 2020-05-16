@@ -48,8 +48,9 @@ namespace WebApplication1.Controllers
 
             return View();
         }
+        
 
-        public IActionResult TimeTable()
+        public IActionResult TimeTable(bool eventCheckbox, bool homeworkCheckbox)
         {
             ViewData["Message"] = "Страница с расписанием";
             var model = new TimeTableViewModel();
