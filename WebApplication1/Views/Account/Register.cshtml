@@ -1,0 +1,19 @@
+﻿@model MessageModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<p>@Model.Message</p>
+    <form method="post" asp-action="Register">
+        <label>Логин</label>
+        <input class="input-group" type="text" name="login" />
+        <label>Пароль</label>
+        <input class="input-group" type="text" name="password" />
+        <label>Фамилия</label>
+        <input class="input-group" type="text" name="lastName" />
+        <label>Имя</label>
+        <input class="input-group" type="text" name="firstName" />
+        <label>Отчество</label>
+        <input class="input-group" type="text" name="otchestvo" />
+        <input type="submit" value="Зарегистрироваться" />
+    </form>
