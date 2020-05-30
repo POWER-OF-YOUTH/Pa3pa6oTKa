@@ -9,7 +9,7 @@ namespace WebApplication1
 {
     public class DatabaseManager
     {
-        public static Queue<MainDataBase> MainDatabases = new Queue<MainDataBase>();
+        private static Queue<MainDataBase> MainDatabases = new Queue<MainDataBase>();
 
         static DatabaseManager()
         {

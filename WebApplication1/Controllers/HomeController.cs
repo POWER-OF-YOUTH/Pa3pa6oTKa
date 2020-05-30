@@ -14,46 +14,32 @@ namespace WebApplication1.Controllers
         public IActionResult Index()
         {
             ViewData["Message"] = "Главная страница";
-            return View();
-        }
-
-        public IActionResult Login()
-        {
-            ViewData["Message"] = "Страница входа";
-
-            return View();
-        }
-
-        public IActionResult Register()
-        {
-            ViewData["Message"] = "Страница регистрации";
-
-            return View();
+            return View(new AccountModel(HttpContext.Request.Cookies));
         }
 
         public IActionResult AddHomework()
         {
             ViewData["Message"] = "Страница добавления дАмашки";
-            return View();
+            return View(new AccountModel(HttpContext.Request.Cookies));
         }
 
         public IActionResult AddEvents()
         {
             ViewData["Message"] = "Страница добавления мероприятий";
-            return View();
+            return View(new AccountModel(HttpContext.Request.Cookies));
         }
         public IActionResult TestMethod()
         {
             ViewData["Message"] = "Тестовое сообщение.";
 
-            return View();
+            return View(new AccountModel(HttpContext.Request.Cookies));
         }
         
 
         public IActionResult TimeTable(bool eventCheckbox, bool homeworkCheckbox)
         {
             ViewData["Message"] = "Страница с расписанием";
-            var model = new TimeTableViewModel();
+            var model = new TimeTableViewModel(HttpContext.Request.Cookies);
             var date = DateTime.Now.Date;
             while (date.DayOfWeek != DayOfWeek.Monday)
                 date -= new TimeSpan(1, 0, 0, 0);

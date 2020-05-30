@@ -26,6 +26,8 @@ namespace WebApplication1.Databases
         private static readonly string SQL_GetHomeworkByTime;
         private static readonly string SQL_RegisterUser;
         private static readonly string SQL_ContainsLogin;
+        private static readonly string SQL_GetToken;
+        private static readonly string SQL_GetUser;
         #endregion
 
         static MainDataBase()
@@ -34,8 +36,10 @@ namespace WebApplication1.Databases
             SQL_GetHomeworkByTime = $"SELECT h.id, h.groupid, h.title, h.description, h.attachment, h.deadline, h.courseid, c.courseName FROM {Table_Homeworks} as h, {Table_Courses} as c WHERE h.courseid = c.id AND deadline >= @sdeadline AND deadline <= @edeadline ORDER BY h.deadline";
             SQL_CreateEvent = $"INSERT INTO {Table_Events} (name, description, startTime) VALUES (@name, @desc, @sTime)";
             SQL_GetEventByTime = $"SELECT * FROM {Table_Events} WHERE startTime >= @sTime AND startTime <= @eTime";
-            SQL_RegisterUser = $"INSERT INTO {Table_Users} (login, firstname, lastname, otchestvo, password) VALUES (@login, @fn, @ln, @ot, @pass)";
+            SQL_RegisterUser = $"INSERT INTO {Table_Users} (login, firstname, lastname, otchestvo, password, token) VALUES (@login, @fn, @ln, @ot, @pass, @token)";
             SQL_ContainsLogin = $"SELECT COUNT(*) FROM users WHERE login = @login";
+            SQL_GetToken = $"SELECT token FROM {Table_Users} WHERE login = @login AND password = @pass";
+            SQL_GetUser = $"SELECT firstName, lastName FROM {Table_Users} WHERE token = @token";
         }
 
         public MainDataBase() : base(File.ReadLines(@"secretdatabaseinformation.txt").First())
@@ -117,12 +121,14 @@ namespace WebApplication1.Databases
 
         public bool RegisterUser(string login, string firstName, string lastName, string otchestvo, byte[] password)
         {
+            var token = new Random().NextString(64);
             var command = new MySqlCommand(SQL_RegisterUser);
             command.Parameters.Add(new MySqlParameter("@login", login));
             command.Parameters.Add(new MySqlParameter("@fn", firstName));
             command.Parameters.Add(new MySqlParameter("@ln", lastName));
             command.Parameters.Add(new MySqlParameter("@ot", otchestvo));
             command.Parameters.Add(new MySqlParameter("@pass", password));
+            command.Parameters.Add(new MySqlParameter("@token", token));
             var result = ExecuteNonQuery(command);
             Release();
             return result == 1;
@@ -135,6 +141,38 @@ namespace WebApplication1.Databases
             var result = (long)ExecuteScalar(command);
             Release();
             return result > 0;
+        }
+
+        public string GetToken(string login, byte[] password)
+        {
+            var command = new MySqlCommand(SQL_GetToken);
+            command.Parameters.Add(new MySqlParameter("@login", login));
+            command.Parameters.Add(new MySqlParameter("@pass", password));
+            string result = null;
+            ExecuteReader(command, (reader) =>
+            {
+                if (reader.Read())
+                {
+                    result = reader.GetString(0);
+                }
+            });
+            Release();
+            return result;
+        }
+
+        internal void FillUser(AccountModel model, string token)
+        {
+            var command = new MySqlCommand(SQL_GetUser);
+            command.Parameters.Add(new MySqlParameter("@token", token));
+            ExecuteReader(command, reader =>
+            {
+                if (reader.Read())
+                {
+                    model.FirstName = reader.GetString(0);
+                    model.LastName = reader.GetString(1);
+                }
+            });
+            Release();
         }
     }
 }

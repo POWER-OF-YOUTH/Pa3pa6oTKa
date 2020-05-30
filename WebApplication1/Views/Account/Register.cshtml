@@ -3,12 +3,13 @@
     ViewData["Title"] = "Register";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+    <h1>Регистрация</h1>
 <p>@Model.Message</p>
     <form method="post" asp-action="Register">
         <label>Логин</label>
         <input class="input-group" type="text" name="login" />
         <label>Пароль</label>
-        <input class="input-group" type="text" name="password" />
+        <input class="input-group" type="password" name="password" />
         <label>Фамилия</label>
         <input class="input-group" type="text" name="lastName" />
         <label>Имя</label>

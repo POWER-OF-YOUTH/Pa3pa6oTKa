@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,5 +10,17 @@ namespace WebApplication1.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
+        public AccountModel(IRequestCookieCollection cookies)
+        {
+            if (!cookies.ContainsKey("token"))
+                return;
+            DatabaseManager.GetMain().FillUser(this, cookies["token"]);
+        }
+
+        public bool Exists()
+        {
+            return FirstName != null;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,9 +7,15 @@ using WebApplication1.DatabaseModels;
 
 namespace WebApplication1.Models
 {
-    public class TimeTableViewModel
+    public class TimeTableViewModel : AccountModel
     {
         public Dictionary<DateTime, Day> Days = new Dictionary<DateTime, Day>();
+
+        public TimeTableViewModel(IRequestCookieCollection cookies) : base(cookies)
+        {
+
+        }
+
         public bool EventChecked { get; set; }
         public bool HomeworkChecked { get; set; }
     }
