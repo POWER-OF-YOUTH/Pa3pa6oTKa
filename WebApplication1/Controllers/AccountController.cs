@@ -28,6 +28,10 @@ namespace WebApplication1.Controllers
                 return View("Register", new MessageModel("Не все данные указаны корректно", HttpContext.Request.Cookies));
             if (!DatabaseManager.GetMain().RegisterUser(login, firstName, lastName, otchestvo, password.GetSHA256()))
                 return View("Register", new MessageModel("Произошла неведомая ошибка. Повторите попытку регистрации.", HttpContext.Request.Cookies));
+            var token = DatabaseManager.GetMain().GetToken(login, password.GetSHA256());
+            if (token == null)
+                return View(new MessageModel("Логин или пароль неверные", HttpContext.Request.Cookies));
+            HttpContext.Response.Cookies.Append("token", token);
             return Redirect("/");
         }
 
@@ -40,6 +44,10 @@ namespace WebApplication1.Controllers
         public IActionResult Login(string login, string password)
         {
             var token = DatabaseManager.GetMain().GetToken(login, password.GetSHA256());
+            if (token == null)
+            {
+                return View(new MessageModel("Логин или пароль неверные", HttpContext.Request.Cookies));
+            }
             HttpContext.Response.Cookies.Append("token", token);
             return Redirect("/");
         }

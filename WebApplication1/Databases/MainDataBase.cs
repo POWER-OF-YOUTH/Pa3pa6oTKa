@@ -28,6 +28,7 @@ namespace WebApplication1.Databases
         private static readonly string SQL_ContainsLogin;
         private static readonly string SQL_GetToken;
         private static readonly string SQL_GetUser;
+        private static readonly string SQL_IsTeacher;
         #endregion
 
         static MainDataBase()
@@ -39,7 +40,8 @@ namespace WebApplication1.Databases
             SQL_RegisterUser = $"INSERT INTO {Table_Users} (login, firstname, lastname, otchestvo, password, token) VALUES (@login, @fn, @ln, @ot, @pass, @token)";
             SQL_ContainsLogin = $"SELECT COUNT(*) FROM users WHERE login = @login";
             SQL_GetToken = $"SELECT token FROM {Table_Users} WHERE login = @login AND password = @pass";
-            SQL_GetUser = $"SELECT firstName, lastName FROM {Table_Users} WHERE token = @token";
+            SQL_GetUser = $"SELECT id, firstName, lastName FROM {Table_Users} WHERE token = @token";
+            SQL_IsTeacher = $"";
         }
 
         public MainDataBase() : base(File.ReadLines(@"secretdatabaseinformation.txt").First())
@@ -168,8 +170,9 @@ namespace WebApplication1.Databases
             {
                 if (reader.Read())
                 {
-                    model.FirstName = reader.GetString(0);
-                    model.LastName = reader.GetString(1);
+                    model.UserID = reader.GetInt32(0);
+                    model.FirstName = reader.GetString(1);
+                    model.LastName = reader.GetString(2);
                 }
             });
             Release();

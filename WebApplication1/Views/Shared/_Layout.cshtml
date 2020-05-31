@@ -31,18 +31,25 @@
             </div>
             <div class="navbar-left navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="TimeTable">Расписание</a></li>
+                    @if (Model.IsStudent)
+                    {
+                        <li><a asp-area="" asp-controller="Home" asp-action="TimeTable">Расписание</a></li>
+                    }
+                    @if (Model.IsTeacher)
+                    {
+                        <li><a asp-area="" asp-controller="Home" asp-action="TimeTable">Расписание</a></li>
+                    }
+                    @if (Model.IsEventsHolder)
+                    {
+
+                    }
                 </ul>
             </div>
-            <div class="navbar-left navbar-collapse collapse">
+            <div class="navbar-right navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="TimeTable">Расписаниwwе</a></li>
-                </ul>
-            </div>
-            @if (Model.Exists())
-            {
-                <div class="navbar-right navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
+                    @if (Model.Exists())
+                    {
+
                         <li>
                             <a asp-area="" asp-controller="Home" asp-action="Index">
                                 @Model.LastName @Model.FirstName
@@ -64,10 +71,19 @@
                                 </svg>
                             </a>
                         </li>
-                    </ul>
-                </div>
-            }
+                    }
+                    else
+                    {
+                        <li>
+                            <a asp-area="" asp-controller="Account" asp-action="Login">Войти</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Account" asp-action="Register">Зарегистрироваться</a>
+                        </li>
+                    }
+                </ul>
             </div>
+        </div>
     </nav>
 
     <partial name="_CookieConsentPartial" />

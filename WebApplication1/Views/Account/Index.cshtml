@@ -1,0 +1,23 @@
+﻿@model AccountModel
+@{
+    ViewData["Title"] = "Аккаунт";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.LastName @Model.FirstName</h2>
+@if (Model.IsTeacher)
+{
+    <p>Вы преподаватель в группах:</p>
+    @foreach (var group in Model.GetTeacherGroups())
+    {
+
+    }
+}
+@if (Model.IsStudent)
+{
+    <p> Вы студент в группах:</p>
+    @foreach (var group in Model.GetTeacherGroups())
+    {
+
+    }
+}
