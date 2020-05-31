@@ -9,5 +9,13 @@ namespace WebApplication1.DatabaseModels
     {
         public int GroupID { get; set; }
         public string GroupName { get; set; }
+        public Course Course { get; set; }
+
+        public string GetCourseName()
+        {
+            if (Course == null)
+                return $"Академическая группа";
+            return Course.CourseName;
+        }
     }
 }

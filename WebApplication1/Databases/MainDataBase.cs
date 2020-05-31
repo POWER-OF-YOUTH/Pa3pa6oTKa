@@ -17,6 +17,10 @@ namespace WebApplication1.Databases
         private static readonly string Table_Homeworks = "homeworks";
         private static readonly string Table_Courses = "courses";
         private static readonly string Table_Users = "users";
+        private static readonly string Table_Students = "students";
+        private static readonly string Table_Prepods = "prepods";
+        private static readonly string Table_Organizers = "organizers";
+        private static readonly string Table_Groups = "groups";
         #endregion
 
         #region SQLQueries
@@ -29,6 +33,10 @@ namespace WebApplication1.Databases
         private static readonly string SQL_GetToken;
         private static readonly string SQL_GetUser;
         private static readonly string SQL_IsTeacher;
+        private static readonly string SQL_IsStudent;
+        private static readonly string SQL_IsEventsHolder;
+        private static readonly string SQL_GetTeacherGroups;
+        private static readonly string SQL_GetStudentGroups;
         #endregion
 
         static MainDataBase()
@@ -38,10 +46,14 @@ namespace WebApplication1.Databases
             SQL_CreateEvent = $"INSERT INTO {Table_Events} (name, description, startTime) VALUES (@name, @desc, @sTime)";
             SQL_GetEventByTime = $"SELECT * FROM {Table_Events} WHERE startTime >= @sTime AND startTime <= @eTime";
             SQL_RegisterUser = $"INSERT INTO {Table_Users} (login, firstname, lastname, otchestvo, password, token) VALUES (@login, @fn, @ln, @ot, @pass, @token)";
-            SQL_ContainsLogin = $"SELECT COUNT(*) FROM users WHERE login = @login";
+            SQL_ContainsLogin = $"SELECT COUNT(*) FROM {Table_Users} WHERE login = @login";
             SQL_GetToken = $"SELECT token FROM {Table_Users} WHERE login = @login AND password = @pass";
             SQL_GetUser = $"SELECT id, firstName, lastName FROM {Table_Users} WHERE token = @token";
-            SQL_IsTeacher = $"";
+            SQL_IsTeacher = $"SELECT COUNT(*) FROM {Table_Prepods} WHERE userid = @userid";
+            SQL_IsStudent = $"SELECT COUNT(*) FROM {Table_Students} WHERE userid = @userid";
+            SQL_IsEventsHolder = $"SELECT COUNT(*) FROM {Table_Organizers} WHERE userid = @userid";
+            SQL_GetTeacherGroups = $"SELECT g.id as groupid, g.groupName, c.id as courseid, c.coursename FROM {Table_Groups} as g, {Table_Courses} as c, {Table_Prepods} as p WHERE p.userid = @userid AND p.groupid = g.id AND c.id = g.courseid";
+            SQL_GetStudentGroups = $"SELECT g.id as groupid, g.groupName, c.id as courseid, c.coursename FROM {Table_Groups} as g, {Table_Courses} as c, {Table_Students} as p WHERE p.userid = @userid AND p.groupid = g.id AND c.id = g.courseid";
         }
 
         public MainDataBase() : base(File.ReadLines(@"secretdatabaseinformation.txt").First())
@@ -174,8 +186,64 @@ namespace WebApplication1.Databases
                     model.FirstName = reader.GetString(1);
                     model.LastName = reader.GetString(2);
                 }
+                reader.Close();
             });
+            command = new MySqlCommand(SQL_IsTeacher);
+            command.Parameters.Add(new MySqlParameter("@userid", model.UserID));
+            model.IsTeacher = (long)ExecuteScalar(command) > 0;
+            command = new MySqlCommand(SQL_IsStudent);
+            command.Parameters.Add(new MySqlParameter("@userid", model.UserID));
+            model.IsStudent = (long)ExecuteScalar(command) > 0;
+            command = new MySqlCommand(SQL_IsEventsHolder);
+            command.Parameters.Add(new MySqlParameter("@userid", model.UserID));
+            model.IsEventsHolder = (long)ExecuteScalar(command) > 0;
             Release();
+        }
+
+        public List<Group> GetTeacherGroups(int userid)
+        {
+            var command = new MySqlCommand(SQL_GetTeacherGroups);
+            command.Parameters.Add(new MySqlParameter("@userid", userid));
+            var result = new List<Group>();
+            ExecuteReader(command, reader =>
+            {
+                while (reader.Read())
+                {
+                    var group = new Group();
+                    group.GroupID = reader.GetInt32(0);
+                    group.GroupName = reader.GetString(1);
+                    group.Course = new Course()
+                    {
+                        ID = reader.GetInt32(2),
+                        CourseName = reader.GetString(3)
+                    };
+                    result.Add(group);
+                }
+            });
+            return result;
+        }
+
+        public List<Group> GetStudentGroups(int userid)
+        {
+            var command = new MySqlCommand(SQL_GetStudentGroups);
+            command.Parameters.Add(new MySqlParameter("@userid", userid));
+            var result = new List<Group>();
+            ExecuteReader(command, reader =>
+            {
+                while (reader.Read())
+                {
+                    var group = new Group();
+                    group.GroupID = reader.GetInt32(0);
+                    group.GroupName = reader.GetString(1);
+                    group.Course = new Course()
+                    {
+                        ID = reader.GetInt32(2),
+                        CourseName = reader.GetString(3)
+                    };
+                    result.Add(group);
+                }
+            });
+            return result;
         }
     }
 }

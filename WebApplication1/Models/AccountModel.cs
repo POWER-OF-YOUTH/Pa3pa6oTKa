@@ -2,8 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using WebApplication1.DatabaseModels;
 
 namespace WebApplication1.Models
 {
@@ -31,7 +31,12 @@ namespace WebApplication1.Models
 
         public List<Group> GetTeacherGroups()
         {
+            return DatabaseManager.GetMain().GetTeacherGroups(UserID);
+        }
 
+        public List<Group> GetStudentGroups()
+        {
+            return DatabaseManager.GetMain().GetStudentGroups(UserID);
         }
     }
 }
