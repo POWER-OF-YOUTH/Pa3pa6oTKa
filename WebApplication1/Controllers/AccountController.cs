@@ -11,7 +11,7 @@ namespace WebApplication1.Controllers
     {
         public IActionResult Index()
         {
-            return Redirect("/");
+            return View(new AccountModel(HttpContext.Request.Cookies));
         }
 
         public IActionResult Register()

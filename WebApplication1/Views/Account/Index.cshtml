@@ -10,7 +10,7 @@
     <p>Вы преподаватель в группах:</p>
     @foreach (var group in Model.GetTeacherGroups())
     {
-
+        <p>@group.GroupName;    @group.GetCourseName()</p>
     }
 }
 @if (Model.IsStudent)
