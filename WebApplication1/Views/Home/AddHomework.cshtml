@@ -1,6 +1,27 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
+﻿@model AccountModel
+@{
+    ViewData["Title"] = "Тут вы можете добавить дз или иные материалы";
 }
 <h2>@ViewData["Title"]</h2>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<p></p>
+<form method="post" action="/Home/CreateHomework">
+    <div class="form-group">
+        <label for="exampleInputEmail1">Название</label>
+        <input class="form-control" name="title" aria-describedby="emailHelp" placeholder="Введите название">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Описание</label>
+        <textarea class="form-control" name="description" id="exampleInputPassword1" placeholder="Описание" style="height:150px"></textarea>
+    </div>
+    <div class="form-group">
+        <p>Выберите группу/группы</p>
+       
+        @foreach (var group in Model.GetTeacherGroups())
+        {   
+    <p><input type="checkbox" name="browser" value="@group.GroupID" />@group.GroupName</p>
+        }
+    </div>
+    <input type="file" name="Ffile">
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>

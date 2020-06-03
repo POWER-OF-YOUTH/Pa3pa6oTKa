@@ -37,11 +37,12 @@
                     }
                     @if (Model.IsTeacher)
                     {
-                        <li><a asp-area="" asp-controller="Home" asp-action="TimeTable">Расписание</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="AddHomework">Добавить что-то</a></li>
+
                     }
                     @if (Model.IsEventsHolder)
                     {
-
+                        <li><a asp-area="" asp-controller="Home" asp-action="TimeTable">Расписание</a></li>
                     }
                 </ul>
             </div>
@@ -51,8 +52,8 @@
                     {
 
                         <li>
-                            <a asp-area="" asp-controller="Home" asp-action="Index">
-                                @Model.LastName @Model.FirstName
+                            <a asp-area="" asp-controller="Account" asp-action="Index">
+                                @Model.LastName @Model.FirstName 
                             </a>
                         </li>
                         <li>
