@@ -52,8 +52,12 @@ namespace WebApplication1.Databases
             SQL_IsTeacher = $"SELECT COUNT(*) FROM {Table_Prepods} WHERE userid = @userid";
             SQL_IsStudent = $"SELECT COUNT(*) FROM {Table_Students} WHERE userid = @userid";
             SQL_IsEventsHolder = $"SELECT COUNT(*) FROM {Table_Organizers} WHERE userid = @userid";
-            SQL_GetTeacherGroups = $"SELECT g.id as groupid, g.groupName, c.id as courseid, c.coursename FROM {Table_Groups} as g, {Table_Courses} as c, {Table_Prepods} as p WHERE p.userid = @userid AND p.groupid = g.id AND c.id = g.courseid";
-            SQL_GetStudentGroups = $"SELECT g.id as groupid, g.groupName, c.id as courseid, c.coursename FROM {Table_Groups} as g, {Table_Courses} as c, {Table_Students} as p WHERE p.userid = @userid AND p.groupid = g.id AND c.id = g.courseid";
+            SQL_GetTeacherGroups = $"SELECT g.id as groupid, g.groupName, c.id as courseid, c.coursename " +
+                $"FROM {Table_Groups} as g, {Table_Courses} as c, {Table_Prepods} as p " +
+                $"WHERE p.userid = @userid AND p.groupid = g.id AND c.id = g.courseid";
+            SQL_GetStudentGroups = $"SELECT g.id as groupid, g.groupName, c.id as courseid, c.coursename " +
+                $"FROM {Table_Groups} as g, {Table_Courses} as c, {Table_Students} as p " +
+                $"WHERE p.userid = @userid AND p.groupid = g.id AND c.id = g.courseid";
         }
 
         public MainDataBase() : base(File.ReadLines(@"secretdatabaseinformation.txt").First())

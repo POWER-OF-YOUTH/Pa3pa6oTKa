@@ -16,8 +16,8 @@
 @if (Model.IsStudent)
 {
     <p> Вы студент в группах:</p>
-    @foreach (var group in Model.GetTeacherGroups())
+    @foreach (var group in Model.GetStudentGroups())
     {
-
+        <p>@group.GroupName</p>
     }
 }
