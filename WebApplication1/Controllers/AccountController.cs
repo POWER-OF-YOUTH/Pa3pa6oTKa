@@ -40,6 +40,13 @@ namespace WebApplication1.Controllers
             return View(new MessageModel("", HttpContext.Request.Cookies));
         }
 
+        public IActionResult Logout()
+        {
+            if (HttpContext.Request.Cookies.ContainsKey("token"))
+                HttpContext.Response.Cookies.Delete("token");
+            return Redirect("/");
+        }
+
         [HttpPost]
         public IActionResult Login(string login, string password)
         {

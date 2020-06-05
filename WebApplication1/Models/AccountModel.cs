@@ -19,7 +19,7 @@ namespace WebApplication1.Models
 
         public AccountModel(IRequestCookieCollection cookies)
         {
-            if (!cookies.ContainsKey("token"))
+            if (!cookies.ContainsKey("token") || string.IsNullOrEmpty(cookies["token"]))
                 return;
             DatabaseManager.GetMain().FillUser(this, cookies["token"]);
         }
