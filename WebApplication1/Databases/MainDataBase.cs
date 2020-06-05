@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using WebApplication1.Controllers;
 using WebApplication1.DatabaseModels;
 using WebApplication1.Models;
 
@@ -37,10 +38,12 @@ namespace WebApplication1.Databases
         private static readonly string SQL_IsEventsHolder;
         private static readonly string SQL_GetTeacherGroups;
         private static readonly string SQL_GetStudentGroups;
+        private static readonly string SQL_HomeworkChain;
         #endregion
 
         static MainDataBase()
         {
+            SQL_HomeworkChain = $" INSERT INTO homeworkassigment(groupid, homeworkid) VALUES(@groupid, @homeworkid)";
             SQL_CreateHomework = $"INSERT INTO {Table_Homeworks} (title,description,attachment,deadline) VALUES (@title, @description,@attachment,@deadline)";
             SQL_GetHomeworkByTime = $"SELECT h.id, h.groupid, h.title, h.description, h.attachment, h.deadline, h.courseid, c.courseName FROM {Table_Homeworks} as h, {Table_Courses} as c WHERE h.courseid = c.id AND deadline >= @sdeadline AND deadline <= @edeadline ORDER BY h.deadline";
             SQL_CreateEvent = $"INSERT INTO {Table_Events} (name, description, startTime) VALUES (@name, @desc, @sTime)";
@@ -64,6 +67,15 @@ namespace WebApplication1.Databases
         {
         }
 
+        public void ChainHomework(int groupid,int homeworkid)
+        {
+            var command = new MySqlCommand(SQL_HomeworkChain);
+            command.Parameters.Add(new MySqlParameter("@groupid", groupid));
+            command.Parameters.Add(new MySqlParameter("@homeworkid", homeworkid));
+            ExecuteNonQuery(command);
+            Release();
+
+        }
         public void CreateEvent(string title, string description, DateTime time)
         {
             var command = new MySqlCommand(SQL_CreateEvent);
@@ -72,6 +84,19 @@ namespace WebApplication1.Databases
             command.Parameters.Add(new MySqlParameter("@sTime", time));
             ExecuteNonQuery(command);
             Release();
+        }
+        public int CreateHomework(string attachment, string description, string title, DateTime deadline )
+        {
+            var command = new MySqlCommand(SQL_CreateHomework);
+            command.Parameters.Add(new MySqlParameter("@title", title));
+            command.Parameters.Add(new MySqlParameter("@description",  description));
+            command.Parameters.Add(new MySqlParameter("@attachment", attachment));
+            command.Parameters.Add(new MySqlParameter("@deadline", deadline));
+            
+            ExecuteNonQuery(command);
+            Release();
+            return ((int)command.LastInsertedId);
+           
         }
 
         public List<Event> GetEventsByTime(DateTime startTime, DateTime endTime)
@@ -96,16 +121,16 @@ namespace WebApplication1.Databases
             return events;
         }
 
-        public void CreateHomework(string title, string description, DateTime time, string way)
-        {
-            var command = new MySqlCommand(SQL_CreateEvent);
-            command.Parameters.Add(new MySqlParameter("@title", title));
-            command.Parameters.Add(new MySqlParameter("@description", description));
-            command.Parameters.Add(new MySqlParameter("@attachment", way));
-            command.Parameters.Add(new MySqlParameter("@deadline", time));
-            ExecuteNonQuery(command);
-            Release();
-        }
+        //public void CreateHomework(string title, string description, DateTime time, string way)
+        //{
+        //    var command = new MySqlCommand(SQL_CreateEvent);
+        //    command.Parameters.Add(new MySqlParameter("@title", title));
+        //    command.Parameters.Add(new MySqlParameter("@description", description));
+        //    command.Parameters.Add(new MySqlParameter("@attachment", way));
+        //    command.Parameters.Add(new MySqlParameter("@deadline", time));
+        //    ExecuteNonQuery(command);
+        //    Release();
+        //}
 
         public List<Homework> GetHomeworksByTime(DateTime startTime, DateTime endTime)
         {

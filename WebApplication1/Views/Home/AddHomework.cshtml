@@ -19,7 +19,7 @@
        
         @foreach (var group in Model.GetTeacherGroups())
         {   
-    <p><input type="checkbox" name="browser" value="@group.GroupID" />@group.GroupName</p>
+    <p><input type="checkbox" name="groupList[]" value="@group.GroupID" />@group.GroupName</p>
         }
     </div>
     <input type="file" name="Ffile">

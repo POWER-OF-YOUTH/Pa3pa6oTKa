@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication1.Databases;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -81,9 +82,14 @@ namespace WebApplication1.Controllers
 
 #region Data
         [HttpPost]
-        public ActionResult CreateHomework(string title, string description, string Ffile)
+        public ActionResult CreateHomework(string title, int[] groupList, string description, string Ffile)
         {
             //TODO: Добавление информации в базу данных
+            var   addHomework = DatabaseManager.GetMain().CreateHomework(Ffile, description, title, DateTime.Now + new TimeSpan(365,0,0,0));
+            for (int i = 0; i < groupList.Length; i++ )
+            {
+                DatabaseManager.GetMain().ChainHomework(groupList[i], addHomework);
+            }
             return Redirect("/");
         }
 #endregion
