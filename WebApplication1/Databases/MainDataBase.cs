@@ -45,7 +45,7 @@ namespace WebApplication1.Databases
         {
             SQL_HomeworkChain = $" INSERT INTO homeworkassigment(groupid, homeworkid) VALUES(@groupid, @homeworkid)";
             SQL_CreateHomework = $"INSERT INTO {Table_Homeworks} (title,description,attachment,deadline) VALUES (@title, @description,@attachment,@deadline)";
-            SQL_GetHomeworkByTime = $"SELECT h.id, h.groupid, h.title, h.description, h.attachment, h.deadline, h.courseid, c.courseName FROM {Table_Homeworks} as h, {Table_Courses} as c WHERE h.courseid = c.id AND deadline >= @sdeadline AND deadline <= @edeadline ORDER BY h.deadline";
+            SQL_GetHomeworkByTime = $"SELECT h.id as homeworkid, ha.groupid, g.groupName, c.id as courseid, c.courseName, h.title, h.description, h.attachment, h.deadline FROM homeworks as h, students as s, groups as g, courses as c, homeworkassigment as ha WHERE s.userid = @userid AND s.groupid = ha.groupid AND h.id = ha.homeworkid AND g.courseid = c.id AND g.id = s.groupid AND deadline >= @sdeadline AND deadline <= @edeadline ORDER BY h.deadline";
             SQL_CreateEvent = $"INSERT INTO {Table_Events} (name, description, startTime) VALUES (@name, @desc, @sTime)";
             SQL_GetEventByTime = $"SELECT * FROM {Table_Events} WHERE startTime >= @sTime AND startTime <= @eTime";
             SQL_RegisterUser = $"INSERT INTO {Table_Users} (login, firstname, lastname, otchestvo, password, token) VALUES (@login, @fn, @ln, @ot, @pass, @token)";
@@ -76,6 +76,7 @@ namespace WebApplication1.Databases
             Release();
 
         }
+
         public void CreateEvent(string title, string description, DateTime time)
         {
             var command = new MySqlCommand(SQL_CreateEvent);
@@ -85,6 +86,7 @@ namespace WebApplication1.Databases
             ExecuteNonQuery(command);
             Release();
         }
+
         public int CreateHomework(string attachment, string description, string title, DateTime deadline )
         {
             var command = new MySqlCommand(SQL_CreateHomework);
@@ -96,7 +98,6 @@ namespace WebApplication1.Databases
             ExecuteNonQuery(command);
             Release();
             return ((int)command.LastInsertedId);
-           
         }
 
         public List<Event> GetEventsByTime(DateTime startTime, DateTime endTime)
@@ -132,9 +133,10 @@ namespace WebApplication1.Databases
         //    Release();
         //}
 
-        public List<Homework> GetHomeworksByTime(DateTime startTime, DateTime endTime)
+        public List<Homework> GetHomeworksByTime(int userid, DateTime startTime, DateTime endTime)
         {
             var command = new MySqlCommand(SQL_GetHomeworkByTime);
+            command.Parameters.Add(new MySqlParameter("@userid", userid));
             command.Parameters.Add(new MySqlParameter("@sdeadline", startTime));
             command.Parameters.Add(new MySqlParameter("@edeadline", endTime));
             var homeworks = new List<Homework>();
@@ -144,17 +146,21 @@ namespace WebApplication1.Databases
                 {
                     var homework = new Homework();
                     homework.ID = x.GetInt32(0);
-                    homework.GroupID = x.GetInt32(1);
-                    homework.Title = x.GetString(2);
-                    homework.Description = x.GetString(3);
-                    if (!x.IsDBNull(4))
-                        homework.Attachment = x.GetString(4);
-                    homework.Deadline = x.GetDateTime(5);
-                    homework.Course = new Course()
+                    homework.Group = new Group()
                     {
-                        ID = x.GetInt32(6),
-                        CourseName = x.GetString(7)
+                        GroupID = x.GetInt32(1),
+                        GroupName = x.GetString(2),
+                        Course = new Course()
+                        {
+                            ID = x.GetInt32(3),
+                            CourseName = x.GetString(4)
+                        }
                     };
+                    homework.Title = x.GetString(5);
+                    homework.Description = x.GetString(6);
+                    if (!x.IsDBNull(7))
+                        homework.Attachment = x.GetString(7);
+                    homework.Deadline = x.GetDateTime(8);
                     homeworks.Add(homework);
                 }
             });

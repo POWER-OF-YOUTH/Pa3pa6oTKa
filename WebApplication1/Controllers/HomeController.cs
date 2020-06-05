@@ -41,6 +41,8 @@ namespace WebApplication1.Controllers
         {
             ViewData["Message"] = "Страница с расписанием";
             var model = new TimeTableViewModel(HttpContext.Request.Cookies);
+            if (!model.IsStudent)
+                return Redirect("/");
             var date = DateTime.Now.Date;
             while (date.DayOfWeek != DayOfWeek.Monday)
                 date -= new TimeSpan(1, 0, 0, 0);
@@ -57,7 +59,7 @@ namespace WebApplication1.Controllers
             }
             if(homeworkCheckbox)
             {
-                var homeworkList = DatabaseManager.GetMain().GetHomeworksByTime(date, date + new TimeSpan(14, 0, 0, 0));
+                var homeworkList = DatabaseManager.GetMain().GetHomeworksByTime(model.UserID, date, date + new TimeSpan(365 * 2, 0, 0, 0));
                 foreach (var item in homeworkList)
                 {
                     CreateDayIfNotExists(model.Days, item.Deadline.Date);

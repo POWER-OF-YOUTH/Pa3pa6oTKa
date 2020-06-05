@@ -30,7 +30,7 @@
             {
                 <tr>
                     <td>@homework.Deadline.TimeOfDay.ToString("hh\\:mm")</td>
-                    <td>@homework.Course.CourseName</td>
+                    <td>@homework.Group.GetCourseName()</td>
                     <td>@homework.Title</td>
                     <td>
                         <a data-toggle="modal" data-target="#addHomework">
@@ -60,7 +60,7 @@
 </div>
 }
 
-<div class="modal fade" id="addHomework" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  >
+@*<div class="modal fade" id="addHomework" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  >
     <div class="modal-dialog" role="document" style="width :35%;">
         <div class="modal-content">
             <div class="modal-header">
@@ -115,5 +115,5 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 
